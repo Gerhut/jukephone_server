@@ -1,0 +1,4 @@
+import os
+
+SECRET_KEY = '\xf2+\x9f\x0fX\xd1\x16\xac[\xa9\xc5\xe7\xc7\x0c\xfc\x01'
+REDIS_URL = os.environ['REDIS_URL']

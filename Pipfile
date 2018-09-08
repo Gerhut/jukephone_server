@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+redis = "*"
+zhuaxia = {git = "https://github.com/Gerhut/zhuaxia.git"}
+python-dotenv = "*"
+
+[dev-packages]
+"flake8" = "*"
+mockredispy = "*"
+pytest = "*"
+"enum34" = "*"
