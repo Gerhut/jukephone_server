@@ -19,8 +19,8 @@ def make_song_response(song):
     if song is None:
         return abort(404)
     if song == 'null':
-        return '', 204, {'Content-Type': 'text/plain'}
-    return song, 200, {'Content-Type': 'text/plain'}
+        return '', 204
+    return redirect(song)
 
 
 @app.route('/', methods=['GET'])

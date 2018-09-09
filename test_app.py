@@ -39,12 +39,12 @@ def test_get_current_song(client, redis):
     rv = client.get('/' + str(list_id))
     assert rv.status_code == 404
 
-    redis.lpush('jukephone:' + str(list_id), 'foo.mp3')
-    redis.lpush('jukephone:' + str(list_id), 'bar.mp3')
+    redis.lpush('jukephone:' + str(list_id), 'http://example.com/foo.mp3')
+    redis.lpush('jukephone:' + str(list_id), 'http://example.com/bar.mp3')
 
     rv = client.get('/' + str(list_id))
-    assert rv.status_code == 200
-    assert rv.data == 'foo.mp3'
+    assert rv.status_code == 302
+    assert rv.headers['Location'] == 'http://example.com/foo.mp3'
 
 
 def test_next_song(client, redis):
@@ -53,12 +53,12 @@ def test_next_song(client, redis):
     rv = client.post('/' + str(list_id) + '/next')
     assert rv.status_code == 404
 
-    redis.lpush('jukephone:' + str(list_id), 'foo.mp3')
-    redis.lpush('jukephone:' + str(list_id), 'bar.mp3')
+    redis.lpush('jukephone:' + str(list_id), 'http://example.com/foo.mp3')
+    redis.lpush('jukephone:' + str(list_id), 'http://example.com/bar.mp3')
 
     rv = client.post('/' + str(list_id) + '/next')
-    assert rv.status_code == 200
-    assert rv.data == 'bar.mp3'
+    assert rv.status_code == 302
+    assert rv.headers['Location'] == 'http://example.com/bar.mp3'
 
     rv = client.post('/' + str(list_id) + '/next')
     assert rv.status_code == 204
@@ -93,7 +93,8 @@ def test_add_song(client, redis):
                      follow_redirects=True)
     assert ':)' in rv.data
     assert redis.llen('jukephone:' + str(list_id)) == 2
-    assert redis.lindex('jukephone:' + str(list_id), 0) == 'http://example.com/foo.mp3'
+    assert redis.lindex('jukephone:' + str(list_id), 0) \
+        == 'http://example.com/foo.mp3'
 
     rv = client.post('/' + str(list_id) + '.html',
                      data={"song": "foo.mp3"},
