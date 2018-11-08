@@ -13,7 +13,7 @@ RUN pipenv install --system --deploy
 
 COPY . /usr/src/app
 
-EXPOSE 3031
+EXPOSE 80
 
 CMD ["uwsgi", "uwsgi.ini"]
 
