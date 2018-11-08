@@ -1,0 +1,16 @@
+build:
+  script:
+  - docker image build --tag $CI_PROJECT_PATH .
+
+deploy:
+  script:
+  - docker container stop $CI_PROJECT_NAME || true
+  - docker container rm $CI_PROJECT_NAME || true
+  - docker container run --detach
+    --name $CI_PROJECT_NAME
+    --env REDIS_URL=$REDIS_URL
+    --restart unless-stopped
+    --network network
+    --label "traefik.enable=true"
+    --label "traefik.frontend.rule=Host:$HOST"
+    $CI_PROJECT_PATH
