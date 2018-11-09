@@ -1,8 +1,10 @@
 build:
+  stage: build
   script:
   - docker image build --tag $CI_PROJECT_PATH .
 
 deploy:
+  stage: deploy
   script:
   - docker container stop $CI_PROJECT_NAME || true
   - docker container rm $CI_PROJECT_NAME || true
